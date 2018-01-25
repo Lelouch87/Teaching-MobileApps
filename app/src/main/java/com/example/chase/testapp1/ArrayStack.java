@@ -15,6 +15,8 @@ public class ArrayStack<E> extends Stack<E> {
     private E[] theData;
     private int topOfStack = -1;
 
+    private int simpleChange;
+    private int toTestCommits;
     /**
      * Default constructor, creates the array of the initial capacity
      */
