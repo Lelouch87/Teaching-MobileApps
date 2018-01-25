@@ -30,4 +30,5 @@
     <string name ="times_button">*</string>
     <string name ="subtract_button">-</string>
     <string name ="no_button">null</string>
+    <string name ="backspace_button">Back</string>
 </resources>
