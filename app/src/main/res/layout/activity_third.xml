@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
+
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
+
     android:id="@+id/linearLay0"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -63,7 +63,7 @@
             android:background="@color/colorPrimary"
             android:text="@string/backspace_button" />
         <Button
-            android:id="@+id/left_parenth"
+            android:id="@+id/null_button"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
@@ -73,7 +73,7 @@
             android:layout_marginEnd="1dp"
             android:textColor="@color/colorPrimaryDark"
             android:background="@color/colorPrimary"
-            android:text="@string/left_parenth" />
+            android:text="@string/no_button" />
         <Button
             android:id="@+id/divide_button"
             android:layout_width="0dp"
@@ -275,6 +275,18 @@
             android:background="@color/colorPrimary"
             android:text="@string/zero_button" />
         <Button
+            android:id="@+id/left_parenth"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:textStyle="bold"
+            android:textSize="20sp"
+            android:padding="8dp"
+            android:layout_marginEnd="1dp"
+            android:textColor="@color/colorPrimaryDark"
+            android:background="@color/colorPrimary"
+            android:text="@string/left_parenth" />
+        <Button
             android:id="@+id/right_parenth"
             android:layout_width="0dp"
             android:layout_height="match_parent"
@@ -286,18 +298,6 @@
             android:textColor="@color/colorPrimaryDark"
             android:background="@color/colorPrimary"
             android:text="@string/right_parenth" />
-        <Button
-            android:id="@+id/decimal_button"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:textStyle="bold"
-            android:textSize="20sp"
-            android:padding="8dp"
-            android:layout_marginEnd="1dp"
-            android:textColor="@color/colorPrimaryDark"
-            android:background="@color/colorPrimary"
-            android:text="@string/decimal_button" />
         <Button
             android:id="@+id/equals_button"
             android:layout_width="0dp"

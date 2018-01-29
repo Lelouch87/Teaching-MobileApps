@@ -1,22 +1,14 @@
 package com.example.chase.testapp1;
 
 import java.util.EmptyStackException;
-
-/**
- * Created by Chase on 1/23/2018.
- */
-
-import java.util.EmptyStackException;
 import java.util.Stack;
 
 public class ArrayStack<E> extends Stack<E> {
     //Data Items
-    public static final int INITIAL_CAPACITY = 10;
+    private static final int INITIAL_CAPACITY = 10;
     private E[] theData;
     private int topOfStack = -1;
 
-    private int simpleChange;
-    private int toTestCommits;
     /**
      * Default constructor, creates the array of the initial capacity
      */
