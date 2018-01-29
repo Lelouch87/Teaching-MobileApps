@@ -9,11 +9,11 @@ This is where you specify all of the system's requirements. This section should 
 
 Usage
 =====
-This is where you explain how to use your application
 Open the application from your device. Use operands 0-9 and operators to perform basic arithmetic in an infix or postfix notation.
 Below are examples of both.
 
 Infix notation  : 5 * 7
+
 Postfix notation: * 5 7
 
 Both result in the same value of 35
