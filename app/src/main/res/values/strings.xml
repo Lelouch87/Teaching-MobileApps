@@ -29,6 +29,8 @@
     <string name ="divide_button">/</string>
     <string name ="times_button">*</string>
     <string name ="subtract_button">-</string>
-    <string name ="no_button">null</string>
+    <string name ="no_button"></string>
+    <string name ="left_parenth">(</string>
+    <string name ="right_parenth">)</string>
     <string name ="backspace_button">Back</string>
 </resources>

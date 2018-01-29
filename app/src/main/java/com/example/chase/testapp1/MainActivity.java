@@ -22,7 +22,7 @@ public class MainActivity extends AppCompatActivity {
         TextView tv = (TextView) findViewById(R.id.tv);
         ImageView iv = (ImageView) findViewById(R.id.iv);
 
-        intro = MediaPlayer.create(MainActivity.this, R.raw.soft_intro_tune);
+        intro = MediaPlayer.create(MainActivity.this, R.raw.alt_intro);
         intro.start();
 
         Animation anim1 = AnimationUtils.loadAnimation(this, R.anim.menutransition);

@@ -11,6 +11,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import java.lang.reflect.Array;
 import java.util.AbstractQueue;
 import java.util.ArrayList;
 import java.util.Deque;
@@ -228,6 +229,32 @@ public class ThirdActivity extends AppCompatActivity {
             }
         });
 
+        Button leftParenth = (Button) findViewById(R.id.left_parenth);
+        leftParenth.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v)
+            {
+                if (et.getText().toString().equalsIgnoreCase("0")) {
+                    et.setText(R.string.left_parenth);
+                } else {
+                    et.setText((et.getText().toString()) + getString(R.string.left_parenth));
+                }
+            }
+        });
+
+        Button rightParenth = (Button) findViewById(R.id.right_parenth);
+        rightParenth.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v)
+            {
+                if (et.getText().toString().equalsIgnoreCase("0")) {
+                    et.setText(R.string.right_parenth);
+                } else {
+                    et.setText((et.getText().toString()) + getString(R.string.right_parenth));
+                }
+            }
+        });
+
         Button divideButton = (Button) findViewById(R.id.divide_button);
         divideButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -248,16 +275,6 @@ public class ThirdActivity extends AppCompatActivity {
             }
         });
 
-        /*
-        Button decimalButton = (Button) findViewById(R.id.decimal_button);
-        decimalButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v)
-            {
-                et.setText(".");
-            }
-        });*/
-
         Button clearButton = (Button) findViewById(R.id.clear_button);
         clearButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -272,30 +289,17 @@ public class ThirdActivity extends AppCompatActivity {
             @Override
             public void onClick(View v)
             {
-                ArrayList<String> input = getInput(et.getText().toString());
-                for (int i = 0; i < input.size(); i++)
+                String input = infixToPostfix(et.getText().toString());
+
+                for (int i = 0; i < input.length(); i++)
                 {
-                    Log.d("tag", input.get(i));
-                }
-                Log.d("Point1", "finished getting input");
-
-                //infix needs to be converted to postfix
-
-                input = convert(input);
-
-                for (int i = 0; i < input.size(); i++)
-                {
-                    Log.d("tag", input.get(i));
+                    Log.d("origin test", input.substring(i, i + 1));
                 }
 
-                Log.d("new postfix", "after conversion");
+                int answer = evaluatePostfix(input);
+                Log.d("myTag", "Origin answer is this : " + answer);
 
-                int answer = calculateInput(input);
-
-                Log.d("Point2", Integer.toString(answer));
-
-                //Log.d("myTag", "Answer is this : " + answer);
-                et.setText(String.valueOf(answer));
+                et.setText(Integer.toString(answer));
 
             }
         });
@@ -315,83 +319,100 @@ public class ThirdActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-    private int calculateInput(ArrayList<String> input) {
-        ArrayStack<Integer> arrayStack = new ArrayStack<>();
-        //Convert strings input into an array of integers
-        String currentToken = "";
-        int rightOperand;
-        int leftOperand;
+    private static String infixToPostfix(String exp)
+    {
+        // initializing empty String for result
+        String result = new String("");
 
-        for (int i = 0; i < input.size(); i++) {
-            Log.d("calculateInput", "currentToken: " + currentToken);
-            currentToken = input.get(i);
-            //if the current token is not an operator it is a digit
-            //so push it onto the stack
-            if (!isOperator(currentToken)) {
-                Log.d("isNotOperator", "Pushing onto stack " + currentToken);
-                arrayStack.push(Integer.parseInt(currentToken));
-                //else it is an operator
-            } else {
-                rightOperand = arrayStack.pop();
-                Log.d("tag", "Right operand is : " + rightOperand);
-                leftOperand = arrayStack.pop();
-                Log.d("tag", "Left operand is : " + leftOperand);
-                arrayStack.push(evaluate(rightOperand, leftOperand, input.get(i)));
+        // initializing empty stack
+        Stack<Character> stack = new Stack<>();
+
+        for (int i = 0; i<exp.length(); ++i)
+        {
+            char c = exp.charAt(i);
+
+            // If the scanned character is an operand, add it to output.
+            if (Character.isLetterOrDigit(c))
+                result += c;
+
+                // If the scanned character is an '(', push it to the stack.
+            else if (c == '(')
+                stack.push(c);
+
+                //  If the scanned character is an ')', pop and output from the stack
+                // until an '(' is encountered.
+            else if (c == ')')
+            {
+                while (!stack.isEmpty() && stack.peek() != '(')
+                    result += stack.pop();
+
+                if (!stack.isEmpty() && stack.peek() != '(')
+                    return "Invalid Expression"; // invalid expression
+                else
+                    stack.pop();
             }
+            else // an operator is encountered
+            {
+                while (!stack.isEmpty() && precedence(c) <= precedence(stack.peek()))
+                    result += stack.pop();
+                stack.push(c);
+            }
+
         }
 
-        return arrayStack.pop();
+        // pop all the operators from the stack
+        while (!stack.isEmpty())
+            result += stack.pop();
+
+        return result;
     }
 
-    private ArrayList<String> getInput(String input)
+    static int evaluatePostfix(String exp)
     {
-        ArrayList<String> strarr = new ArrayList<>();
-        int stringArrayIndex = 0;
-        //StringBuilder sb = new StringBuilder();
-        String temp = "";
-        for (int i = 0; i < input.length(); i++)
+        //create a stack
+        Stack<Integer> stack=new Stack<>();
+
+        // Scan all characters one by one
+        for(int i=0;i<exp.length();i++)
         {
-            //if its an operand
-            if (!isOperator(input.substring(i, i + 1)))
-            {
-                //add it to the string
-                Log.d("tag", "Adding operand: " + input.substring(i, i + 1));
-                temp += input.substring(i, i + 1);
-                //sb.append(input.substring(i, i + 1));
-            }
+            char c=exp.charAt(i);
+
+            // If the scanned character is an operand (number here),
+            // push it to the stack.
+            if(Character.isDigit(c))
+                stack.push(c - '0');
+
+                //  If the scanned character is an operator, pop two
+                // elements from stack apply the operator
             else
             {
-                //then its an operator
-                //so add the previous string to the array
-                Log.d("tag", "Adding total operand: " + temp);
-                strarr.add(temp);
-                //strarr[stringArrayIndex] = temp;
-                temp = "";
-                stringArrayIndex++;
+                int val1 = stack.pop();
+                int val2 = stack.pop();
 
-                Log.d("tag", "Adding operator: " + input.substring(i, i + 1));
-                //and add the operator to the array
-                //strarr[stringArrayIndex] = input.substring(i, i + 1);
-                strarr.add(input.substring(i, i + 1));
-                stringArrayIndex++;
+                switch(c)
+                {
+                    case '+':
+                        stack.push(val2+val1);
+                        break;
+
+                    case '-':
+                        stack.push(val2- val1);
+                        break;
+
+                    case '/':
+                        stack.push(val2/val1);
+                        break;
+
+                    case '*':
+                        stack.push(val2*val1);
+                        break;
+                }
             }
-            //strarr[stringArrayIndex] = temp;
         }
-
-        Log.d("tag1", "Adding final total operand: " + temp);
-        strarr.add(temp);
-
-        /*
-        for (int i = 0; i < strarr.length; i++)
-        {
-            Log.d("tag", strarr[i] + " ");
-        }
-        */
-
-
-        //Log.d("myTag", )
-        return strarr;
+        return stack.pop();
     }
+
+
 
     private ArrayList<String> convert(ArrayList<String> strarr)
     {
@@ -444,13 +465,17 @@ public class ThirdActivity extends AppCompatActivity {
         }
     }
 
-    private int precedence(char op)
+    private static int precedence(char op)
     {
         //if the operator is multiply or divide
-        if (op == '*' || op == '/') {
+        if (op == '+' || op == '-') {
             return 1;
-        } else { //then its either plus or minus
-            return 0;
+        } else if (op == '*' || op == '/'){ //then its either plus or minus
+            return 2;
+        } else if (op == '^') {
+            return 3;
+        } else {
+            return -1;
         }
     }
 
@@ -462,9 +487,8 @@ public class ThirdActivity extends AppCompatActivity {
                 character.equalsIgnoreCase("/"));
     }
 
-    private int evaluate(int rightOperand, int leftOperand, String operator)
+    private static int evaluate(int rightOperand, int leftOperand, String operator)
     {
-        Log.d("evaluate", "in evaluation");
         if (operator.equalsIgnoreCase("+")) {
             return leftOperand + rightOperand;
         } else if (operator.equalsIgnoreCase("-")) {
