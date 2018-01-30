@@ -3,6 +3,7 @@ package com.example.chase.testapp1;
 import java.util.EmptyStackException;
 import java.util.Stack;
 
+@SuppressWarnings("unused")
 public class ArrayStack<E> extends Stack<E> {
     //Data Items
     private static final int INITIAL_CAPACITY = 10;
@@ -73,9 +74,8 @@ public class ArrayStack<E> extends Stack<E> {
         int newCapacity = 2 * theData.length;
         E[] newData = (E[])new Object[newCapacity];
 
-        for(int i = 0; i < theData.length; i++) {
-            newData[i] = theData[i];
-        }
+        System.arraycopy(theData, 0, newData, 0, theData.length);
+
         theData = newData;
     }
 
@@ -85,11 +85,14 @@ public class ArrayStack<E> extends Stack<E> {
      */
     @Override
     public String toString() {
-        String result = "";
+        String arrow = " ==> ";
+        StringBuilder sb = new StringBuilder();
+
         for (E item: theData) {
-            result += item+" ==> ";
+            sb.append(item);
+            sb.append(arrow);
         }
-        return result;
+        return sb.toString();
     }
 }
 
