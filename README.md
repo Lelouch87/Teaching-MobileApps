@@ -12,11 +12,11 @@ Any android system can run this application
 
 Usage
 =====
-Open the application from your device. Use operands 0-9 and operators to perform basic arithmetic in an infix or postfix notation.
-Below are examples of both.
+Open the application from your device. Use operands 0-9 and operators to perform basic arithmetic in an infix notation.
+Operands must be enclosed by two parenthesis otherwise the calculator will not function properly.
 
-Infix notation  : 5 * 7
+CORRECT Infix notation   : (5 * 7)
+INCORRECT Infix notation :  5 * 7
 
-Postfix notation: 5 7 *
-
-Both result in the same value of 35
+CORRECT Infix notation   : ((20 * 2) + 16)
+INCORRECT Infix notation : (20 * 2) + 16
