@@ -315,19 +315,21 @@ public class ThirdActivity extends AppCompatActivity {
             @Override
             public void onClick(View v)
             {
-                String input = infixToPostfix(et.getText().toString());
+                String input;
+                int answer;
+
+                input = infixToPostfix(et.getText().toString());
 
                 for (int i = 0; i < input.length(); i++)
                 {
                     Log.d("origin test", input.substring(i, i + 1));
                 }
 
-                int answer = evaluatePostfix(input);
+                answer = evaluatePostfix(input);
                 Log.d("myTag", "Origin answer is this : " + answer);
 
                 et.setText(Integer.toString(answer));
                 vibr.vibrate(VIBRATION_TIME);
-
             }
         });
 
