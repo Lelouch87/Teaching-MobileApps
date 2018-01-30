@@ -14,7 +14,7 @@ public class ArrayStack<E> extends Stack<E> {
      * Default constructor, creates the array of the initial capacity
      */
     @SuppressWarnings("unchecked")
-    public ArrayStack() {
+    ArrayStack(int size) {
         theData = (E[])new Object[INITIAL_CAPACITY];
     }
 
