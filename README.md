@@ -5,7 +5,7 @@ This application is an infix calculator that can do 4 basic operations of additi
 System Design
 =============
 
-![Main menu](/app/src/main/res/drawable/project1snip1.PNG) ![Splash Art](/app/src/main/res/drawable/project1snip2.PNG)
+![Splash Art](/app/src/main/res/drawable/project1snip2.PNG) ![Main menu](/app/src/main/res/drawable/project1snip1.PNG) 
 
 
 This is where you specify all of the system's requirements. This section should accurately portray the complete operation of your application. Provide scenarios, use cases, system requirements, and diagrams/screenshots of the system.
