@@ -14,6 +14,6 @@ Below are examples of both.
 
 Infix notation  : 5 * 7
 
-Postfix notation: * 5 7
+Postfix notation: 5 7 *
 
 Both result in the same value of 35
