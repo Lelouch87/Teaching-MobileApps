@@ -1,5 +1,8 @@
 # Design Document #
 
+Chase Cullen
+============
+
 This application is an infix calculator that can do 4 basic operations of addition, subtraction, multiplication and division on the operands 0-9. It also includes a short splash screen with an intro sound and a test splash button for the sake of learning/understanding Android Studio. The calculator product itself is to be used for basic arithmetic. 
 
 System Design
