@@ -1,9 +1,12 @@
 package com.example.chase.project2;
 
+import android.database.Cursor;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.ColorMatrix;
 import android.graphics.ColorMatrixColorFilter;
 import android.graphics.Paint;
+import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.view.View;
@@ -44,7 +47,9 @@ public class MainPage extends AppCompatActivity {
     HorizontalScrollMenuView menu;
     TextView textTargetUri;
     ImageView targetImage;
-
+    private Bitmap bmp;
+    private Bitmap operation;
+    private Bitmap newPicture;
     /** Called when the activity is first created. */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,11 +57,26 @@ public class MainPage extends AppCompatActivity {
         setContentView(R.layout.main_page);
 
         Button buttonLoadImage = findViewById(R.id.loadimage);
-        Button takeImage = findViewById(R.id.takepicture);
-        Button greyscale = findViewById(R.id.greyscale);
-        textTargetUri = findViewById(R.id.targeturi);
+        Button takeImage = findViewById(R.id.take_picture);
+        Button restoreButton = findViewById(R.id.restore);
         targetImage = findViewById(R.id.target_image);
-        menu = (HorizontalScrollMenuView) findViewById(R.id.expanded_menu);
+        menu = findViewById(R.id.expanded_menu);
+
+
+        int w = 500, h = 500;
+
+        Bitmap.Config conf = Bitmap.Config.ARGB_8888; // see other conf types
+        Bitmap default_bmp = Bitmap.createBitmap(w, h, conf); // this creates a MUTABLE bitmap
+
+
+        targetImage.setImageBitmap(default_bmp);
+
+
+
+
+
+
+
 
         initMenu();
 
@@ -79,15 +99,11 @@ public class MainPage extends AppCompatActivity {
                 startActivityForResult(photoCaptureIntent, 20);
             }});
 
-        greyscale.setOnClickListener(new View.OnClickListener(){
+        restoreButton.setOnClickListener(new View.OnClickListener(){
 
             @Override
             public void onClick(View v) {
-                //Intent photoCaptureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-
-                targetImage.setImageBitmap(toGrayscale(targetImage.getDrawingCache()));
-
-                //startActivityForResult(photoCaptureIntent, 20);
+                targetImage.setImageBitmap(newPicture);
             }});
 
 
@@ -101,42 +117,207 @@ public class MainPage extends AppCompatActivity {
         if(requestCode1 == requestCode && resultCode == RESULT_OK){
             Bitmap bitmap = (Bitmap)data.getExtras().get("data");
             targetImage.setImageBitmap(bitmap);
+            newPicture = bitmap;
+
         }
     }
 
     private void initMenu() {
-        menu.addItem("Transaction", R.drawable.ic_payment);
-        menu.addItem("2nd", R.drawable.ic_payment);
-        menu.addItem("3rd", R.drawable.ic_payment);
-        menu.addItem("4th", R.drawable.ic_payment);
-        menu.addItem("4th", R.drawable.ic_payment);
-        menu.addItem("4th", R.drawable.ic_payment);
+        menu.addItem("Blue", R.drawable.ic_payment);
+        menu.addItem("Green", R.drawable.ic_payment);
+        menu.addItem("Dark", R.drawable.ic_payment);
+        menu.addItem("Bright", R.drawable.ic_payment);
+        menu.addItem("Gama", R.drawable.ic_payment);
+        menu.addItem("Gray", R.drawable.ic_payment);
 
 
         menu.setOnHSMenuClickListener(new HorizontalScrollMenuView.OnHSMenuClickListener() {
             @Override
             public void onHSMClick(MenuItem menuItem, int position) {
                 Toast.makeText(MainPage.this,""+menuItem.getText(), Toast.LENGTH_SHORT).show();
-                textTargetUri.setText(menuItem.getText());
+                //textTargetUri.setText(menuItem.getText());
+                String menuText = menuItem.getText();
+                switch (menuText) {
+                    case "Blue":
+                        blue(targetImage);
+                        break;
+                    case "Green":
+                        green(targetImage);
+                        break;
+                    case "Dark":
+                        dark(targetImage);
+                        break;
+                    case "Bright":
+                        bright(targetImage);
+                        break;
+                    case "Gama":
+                        gama(targetImage);
+                        break;
+                    case "Gray":
+                        gray(targetImage);
+                        break;
+                }
             }
         });
+
+
     }
 
-    public Bitmap toGrayscale(Bitmap bmpOriginal)
-    {
-        int width, height;
-        height = bmpOriginal.getHeight();
-        width = bmpOriginal.getWidth();
+    public void gray(View view) {
+        BitmapDrawable abmp = (BitmapDrawable) targetImage.getDrawable();
+        bmp = abmp.getBitmap();
 
-        Bitmap bmpGrayscale = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
-        Canvas c = new Canvas(bmpGrayscale);
-        Paint paint = new Paint();
-        ColorMatrix cm = new ColorMatrix();
-        cm.setSaturation(0);
-        ColorMatrixColorFilter f = new ColorMatrixColorFilter(cm);
-        paint.setColorFilter(f);
-        c.drawBitmap(bmpOriginal, 0, 0, paint);
-        return bmpGrayscale;
+        operation = Bitmap.createBitmap(bmp.getWidth(),bmp.getHeight(), bmp.getConfig());
+        double red = 0.33;
+        double green = 0.59;
+        double blue = 0.11;
+
+        for (int i = 0; i < bmp.getWidth(); i++) {
+            for (int j = 0; j < bmp.getHeight(); j++) {
+                int p = bmp.getPixel(i, j);
+                int r = Color.red(p);
+                int g = Color.green(p);
+                int b = Color.blue(p);
+
+                r = (int) red * r;
+                g = (int) green * g;
+                b = (int) blue * b;
+                operation.setPixel(i, j, Color.argb(Color.alpha(p), r, g, b));
+            }
+        }
+        targetImage.setImageBitmap(operation);
     }
+
+    public void blue(View view){
+
+        BitmapDrawable abmp = (BitmapDrawable) targetImage.getDrawable();
+        bmp = abmp.getBitmap();
+
+        operation = Bitmap.createBitmap(bmp.getWidth(),bmp.getHeight(), bmp.getConfig());
+
+        for(int i=0; i<bmp.getWidth(); i++){
+            for(int j=0; j<bmp.getHeight(); j++){
+                int p = bmp.getPixel(i, j);
+                int r = Color.red(p);
+                int g = Color.green(p);
+                int b = Color.blue(p);
+                int alpha = Color.alpha(p);
+
+                r =  0;
+                g =  0;
+                b =  b+150;
+                alpha = 0;
+                operation.setPixel(i, j, Color.argb(Color.alpha(p), r, g, b));
+            }
+        }
+        targetImage.setImageBitmap(operation);
+    }
+
+    public void green(View view){
+
+        BitmapDrawable abmp = (BitmapDrawable) targetImage.getDrawable();
+        bmp = abmp.getBitmap();
+
+        operation = Bitmap.createBitmap(bmp.getWidth(),bmp.getHeight(), bmp.getConfig());
+
+        for(int i=0; i < bmp.getWidth(); i++){
+            for(int j=0; j<bmp.getHeight(); j++){
+                int p = bmp.getPixel(i, j);
+                int r = Color.red(p);
+                int g = Color.green(p);
+                int b = Color.blue(p);
+                int alpha = Color.alpha(p);
+
+                r =  0;
+                g =  g+150;
+                b =  0;
+                alpha = 0;
+                operation.setPixel(i, j, Color.argb(Color.alpha(p), r, g, b));
+            }
+        }
+        targetImage.setImageBitmap(operation);
+    }
+
+    public void gama(View view) {
+
+
+        BitmapDrawable abmp = (BitmapDrawable) targetImage.getDrawable();
+        bmp = abmp.getBitmap();
+
+        operation = Bitmap.createBitmap(bmp.getWidth(),bmp.getHeight(),bmp.getConfig());
+
+        for(int i=0; i<bmp.getWidth(); i++){
+            for(int j=0; j<bmp.getHeight(); j++){
+                int p = bmp.getPixel(i, j);
+                int r = Color.red(p);
+                int g = Color.green(p);
+                int b = Color.blue(p);
+                int alpha = Color.alpha(p);
+
+                r =  r + 150;
+                g =  0;
+                b =  0;
+                alpha = 0;
+                operation.setPixel(i, j, Color.argb(Color.alpha(p), r, g, b));
+            }
+        }
+        targetImage.setImageBitmap(operation);
+    }
+
+    public void dark(View view){
+
+        BitmapDrawable abmp = (BitmapDrawable) targetImage.getDrawable();
+        bmp = abmp.getBitmap();
+
+        operation= Bitmap.createBitmap(bmp.getWidth(),bmp.getHeight(),bmp.getConfig());
+
+        for(int i=0; i<bmp.getWidth(); i++){
+            for(int j=0; j<bmp.getHeight(); j++){
+                int p = bmp.getPixel(i, j);
+                int r = Color.red(p);
+                int g = Color.green(p);
+                int b = Color.blue(p);
+                int alpha = Color.alpha(p);
+
+                r =  r - 50;
+                g =  g - 50;
+                b =  b - 50;
+                alpha = alpha -50;
+                operation.setPixel(i, j, Color.argb(Color.alpha(p), r, g, b));
+            }
+        }
+        targetImage.setImageBitmap(operation);
+    }
+
+
+
+    public void bright(View view){
+
+        BitmapDrawable abmp = (BitmapDrawable) targetImage.getDrawable();
+        bmp = abmp.getBitmap();
+
+
+        operation= Bitmap.createBitmap(bmp.getWidth(), bmp.getHeight(),bmp.getConfig());
+
+        for(int i=0; i<bmp.getWidth(); i++){
+            for(int j=0; j<bmp.getHeight(); j++){
+                int p = bmp.getPixel(i, j);
+                int r = Color.red(p);
+                int g = Color.green(p);
+                int b = Color.blue(p);
+                int alpha = Color.alpha(p);
+
+                r = 100  +  r;
+                g = 100  + g;
+                b = 100  + b;
+                alpha = 100 + alpha;
+                operation.setPixel(i, j, Color.argb(alpha, r, g, b));
+            }
+        }
+        targetImage.setImageBitmap(operation);
+    }
+
+
+
 
 }
