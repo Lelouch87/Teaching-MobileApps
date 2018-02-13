@@ -10,6 +10,16 @@ color. It also includes some filters that take forever, but perform a deeper man
 System Design
 =============
 
+The main screen when you first launch app
+
+
+![Main menu](/src/main/res/raw/project2_opening_screen.PNG)
+
+
+After loading an image from your library
+
+
+![after loading pic](/src/main/res/raw/after_load_image.PNG)
 
 Application targeted version is Nougat 7.0 - 7.1.2
 Any android system can run this application
