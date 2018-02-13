@@ -15,7 +15,7 @@ The main screen when you first launch app
 
 
 After loading an image from your library
-![after loading pic(/src/main/res/raw/after_load_image.PNG)
+![after loading pic](/src/main/res/raw/after_load_image.PNG)
 
 Application targeted version is Nougat 7.0 - 7.1.2
 Any android system can run this application
