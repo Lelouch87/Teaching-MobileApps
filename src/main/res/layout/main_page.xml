@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent">
+    <com.darwindeveloper.horizontalscrollmenulibrary.custom_views.HorizontalScrollMenuView
+        android:id="@+id/expanded_menu"
+        android:layout_width="wrap_content"
+        android:layout_height="100dp"
+        app:backgroundMenuColor="@color/colorPrimaryDark"
+        app:backgroundNotifications="@color/colorPrimary"
+        app:icon_height="50dp"
+        app:icon_width="50dp"
+        app:item_backgroundColor="@color/colorPrimaryDark"
+        app:item_colorSelected="@color/colorPrimary"
+        app:item_marginBottom="4dp"
+        app:item_marginLeft="4dp"
+        app:item_marginRight="4dp"
+        app:item_marginTop="4dp"
+        app:item_textColor="#fff"
+        app:item_textSize="7sp" />
+    <TextView
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="hello"
+        />
+    <Button
+        android:id="@+id/loadimage"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="Load Image"
+        />
+    <Button
+        android:id="@+id/takepicture"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="Take picture"/>
+    <Button
+        android:id="@+id/greyscale"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="greyscale"/>
+
+    <TextView
+        android:id="@+id/targeturi"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        />
+
+
+    <ImageView
+        android:id="@+id/target_image"
+        android:layout_width="match_parent"
+        android:layout_height="278dp"
+        android:contentDescription="current_image" />
+
+    <LinearLayout
+        android:id="@+id/relativeAd"
+        android:layout_width="match_parent"
+        android:layout_height="15dp"
+        android:gravity="center"
+        android:orientation="vertical">
+
+
+    </LinearLayout>
+
+
+
+
+
+</LinearLayout>
