@@ -15,11 +15,52 @@ The main screen when you first launch app
 
 ![Main menu](/src/main/res/raw/project2_opening_screen.PNG)
 
+Either take a new picture from the camera
+
+
+![take pic](/src/main/res/raw/after_takepic.PNG)
+
+
+
+![after take pic](/src/main/res/raw/after_submitpic.PNG)
+
+
+
+Choose an image to load from your library
+
+
+![choose image](/src/main/res/raw/pick_image.PNG)
 
 After loading an image from your library
 
 
 ![after loading pic](/src/main/res/raw/after_load_image.PNG)
+
+Here are some effects on the example picture
+Starting with Grayscale
+
+![grayscale](/src/main/res/raw/after_grayscale.PNG)
+
+Gama
+
+
+![gama](/src/main/res/raw/after_gama.PNG)
+
+Green
+
+
+![green](/src/main/res/raw/after_green.PNG)
+
+Deep Green
+
+
+![deep green](/src/main/res/raw/after_deepgreen.PNG)
+
+Darken
+
+
+![darken](/src/main/res/raw/after_dark.PNG)
+
 
 Application targeted version is Nougat 7.0 - 7.1.2
 Any android system can run this application
