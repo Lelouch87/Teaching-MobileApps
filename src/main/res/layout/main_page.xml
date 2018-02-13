@@ -49,6 +49,8 @@
             style="?android:attr/buttonBarButtonStyle"
             android:padding="8dp"
             android:layout_marginEnd="1dp"
+            android:drawableBottom="@drawable/ic_upload_picture"
+            android:drawableTint="@color/white"
             android:textColor="@color/colorPrimaryDark"
             android:background="@color/colorPrimary"
             android:text="Load image" />
@@ -76,6 +78,8 @@
             style="?android:attr/buttonBarButtonStyle"
             android:padding="8dp"
             android:layout_marginEnd="1dp"
+            android:drawableBottom="@drawable/ic_take_picture"
+            android:drawableTint="@color/white"
             android:textColor="@color/colorPrimaryDark"
             android:background="@color/colorPrimary"
             android:text="Take Picture" />

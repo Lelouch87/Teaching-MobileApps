@@ -3,17 +3,24 @@ package com.example.chase.project2;
 import android.content.ContentValues;
 import android.content.res.Resources;
 import android.database.Cursor;
+import android.graphics.BitmapShader;
 import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.ColorFilter;
 import android.graphics.ColorMatrix;
 import android.graphics.ColorMatrixColorFilter;
+import android.graphics.LightingColorFilter;
 import android.graphics.Matrix;
 import android.graphics.Paint;
+import android.graphics.PorterDuff;
+import android.graphics.PorterDuffColorFilter;
+import android.graphics.Shader;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.content.FileProvider;
 import android.view.View;
 import android.widget.Button;
@@ -64,12 +71,15 @@ public class MainPage extends AppCompatActivity {
     private static final int LOAD_PICTURE = 1;
     private static final int REQUEST_IMAGE_CAPTURE = 2;
     private static final int REQUEST_TAKE_PHOTO = 3;
+    private final int[] mColors =
+            {Color.BLUE, Color.GREEN, Color.RED, Color.LTGRAY, Color.MAGENTA, Color.CYAN,
+                    Color.YELLOW, Color.WHITE};
     /** Called when the activity is first created. */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main_page);
-
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         Button buttonLoadImage = findViewById(R.id.loadimage);
         Button takeImage = findViewById(R.id.take_picture);
         Button restoreButton = findViewById(R.id.restore);
@@ -139,15 +149,7 @@ public class MainPage extends AppCompatActivity {
         }
 
         if (requestCode == REQUEST_TAKE_PHOTO && resultCode == RESULT_OK) {
-            //Bitmap bitmap = BitmapFactory.decodeFile(mCurrentPhotoPath);
-            //targetImage.setImageBitmap(bitmap);
-
-            //Bundle extras = data.getExtras();
-            //Bitmap imageBitmap = (Bitmap) extras.get("data");
-            //targetImage.setImageBitmap(imageBitmap);
-
             setPic();
-
         }
 
     }
@@ -220,7 +222,7 @@ public class MainPage extends AppCompatActivity {
         //bmOptions.inPurgeable = true;
 
         Bitmap bitmap = BitmapFactory.decodeFile(mCurrentPhotoPath, bmOptions);
-        bitmap = RotateBitmap(bitmap, 90);
+        bitmap = RotateBitmap(bitmap, 270);
         newPicture = bitmap;
         targetImage.setImageBitmap(bitmap);
     }
@@ -233,13 +235,18 @@ public class MainPage extends AppCompatActivity {
     }
 
     private void initMenu() {
-        menu.addItem("Blue", R.drawable.ic_payment);
-        menu.addItem("Green", R.drawable.ic_payment);
-        menu.addItem("Dark", R.drawable.ic_payment);
-        menu.addItem("Bright", R.drawable.ic_payment);
-        menu.addItem("Gama", R.drawable.ic_payment);
-        menu.addItem("Gray", R.drawable.ic_payment);
+        menu.addItem("Blue", R.drawable.ic_check);
+        menu.addItem("Green", R.drawable.ic_check);
+        menu.addItem("Red", R.drawable.ic_check);
+        menu.addItem("Yellow", R.drawable.ic_check);
+        menu.addItem("Magenta", R.drawable.ic_check);
+        menu.addItem("Gray", R.drawable.ic_check);
 
+        menu.addItem("Dark", R.drawable.ic_check);
+        menu.addItem("Bright", R.drawable.ic_check);
+        menu.addItem("Gama", R.drawable.ic_check);
+        menu.addItem("Deep Blue", R.drawable.ic_check);
+        menu.addItem("Deep Green", R.drawable.ic_check);
 
         menu.setOnHSMenuClickListener(new HorizontalScrollMenuView.OnHSMenuClickListener() {
             @Override
@@ -249,10 +256,22 @@ public class MainPage extends AppCompatActivity {
                 String menuText = menuItem.getText();
                 switch (menuText) {
                     case "Blue":
-                        blue(targetImage);
+                        changeColorBlue();
                         break;
                     case "Green":
-                        green(targetImage);
+                        changeColorGreen();
+                        break;
+                    case "Red":
+                        changeColorRed();
+                        break;
+                    case "Yellow":
+                        changeColorYellow();
+                        break;
+                    case "Magenta":
+                        changeColorMagenta();
+                        break;
+                    case "Gray":
+                        toGrayscale(newPicture);
                         break;
                     case "Dark":
                         dark(targetImage);
@@ -263,8 +282,11 @@ public class MainPage extends AppCompatActivity {
                     case "Gama":
                         gama(targetImage);
                         break;
-                    case "Gray":
-                        //gray(targetImage);
+                    case "Deep Blue":
+                        blue(targetImage);
+                        break;
+                    case "Deep Green":
+                        green(targetImage);
                         break;
                 }
             }
@@ -273,11 +295,67 @@ public class MainPage extends AppCompatActivity {
 
     }
 
+    private void changeColorBlue(){
+        Bitmap sourceBitmap = newPicture;
+        changeBitmapColor(sourceBitmap, targetImage, Color.BLUE);
+    }
+
+    private void changeColorGreen(){
+        Bitmap sourceBitmap = newPicture;
+        changeBitmapColor(sourceBitmap, targetImage, Color.GREEN);
+    }
+
+    private void changeColorRed(){
+        Bitmap sourceBitmap = newPicture;
+        changeBitmapColor(sourceBitmap, targetImage, Color.RED);
+    }
+
+    private void changeColorYellow(){
+        Bitmap sourceBitmap = newPicture;
+        changeBitmapColor(sourceBitmap, targetImage, Color.YELLOW);
+    }
+    private void changeColorMagenta(){
+        Bitmap sourceBitmap = newPicture;
+        changeBitmapColor(sourceBitmap, targetImage, Color.MAGENTA);
+    }
+
+
+    private void changeBitmapColor(Bitmap sourceBitmap, ImageView image, int color) {
+
+        Bitmap resultBitmap = Bitmap.createBitmap(sourceBitmap, 0, 0,
+                sourceBitmap.getWidth() - 1, sourceBitmap.getHeight() - 1);
+        Paint p = new Paint();
+        ColorFilter filter = new LightingColorFilter(color, 1);
+        p.setColorFilter(filter);
+        image.setImageBitmap(resultBitmap);
+
+        Canvas canvas = new Canvas(resultBitmap);
+        canvas.drawBitmap(resultBitmap, 0, 0, p);
+    }
+
+
+    public void toGrayscale(Bitmap bmpOriginal)
+    {
+        int width, height;
+        height = bmpOriginal.getHeight();
+        width = bmpOriginal.getWidth();
+
+        Bitmap bmpGrayscale = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
+        Canvas c = new Canvas(bmpGrayscale);
+        Paint paint = new Paint();
+        ColorMatrix cm = new ColorMatrix();
+        cm.setSaturation(0);
+        ColorMatrixColorFilter f = new ColorMatrixColorFilter(cm);
+        paint.setColorFilter(f);
+        c.drawBitmap(bmpOriginal, 0, 0, paint);
+        targetImage.setImageBitmap(bmpGrayscale);
+    }
+
     public void blue(View view){
 
-        BitmapDrawable abmp = (BitmapDrawable) targetImage.getDrawable();
-        bmp = abmp.getBitmap();
-
+        //BitmapDrawable abmp = (BitmapDrawable) targetImage.getDrawable();
+        //bmp = abmp.getBitmap();
+        bmp = newPicture;
         operation = Bitmap.createBitmap(bmp.getWidth(),bmp.getHeight(), bmp.getConfig());
 
         for(int i=0; i<bmp.getWidth(); i++){
