@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent">
@@ -29,7 +30,7 @@
         android:layout_width="match_parent"
         android:layout_height="470dp"
         android:scaleType="fitCenter"
-        android:contentDescription="current_image" />
+        android:contentDescription="@string/image_view_description" />
 
 
     <LinearLayout
@@ -53,7 +54,8 @@
             android:drawableTint="@color/white"
             android:textColor="@color/colorPrimaryDark"
             android:background="@color/colorPrimary"
-            android:text="Load image" />
+            android:text="@string/load_image"
+            tools:ignore="NestedWeights" />
         <Button
             android:id="@+id/restore"
             android:layout_width="0dp"
@@ -66,7 +68,7 @@
             android:layout_marginEnd="1dp"
             android:textColor="@color/colorPrimaryDark"
             android:background="@color/colorPrimary"
-            android:text="restore" />
+            android:text="@string/restore" />
 
         <Button
             android:id="@+id/take_picture"
@@ -82,7 +84,7 @@
             android:drawableTint="@color/white"
             android:textColor="@color/colorPrimaryDark"
             android:background="@color/colorPrimary"
-            android:text="Take Picture" />
+            android:text="@string/take_picture" />
 
     </LinearLayout>
 

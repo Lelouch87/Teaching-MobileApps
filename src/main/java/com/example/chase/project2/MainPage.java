@@ -1,9 +1,7 @@
 package com.example.chase.project2;
 
-import android.content.ContentValues;
-import android.content.res.Resources;
-import android.database.Cursor;
-import android.graphics.BitmapShader;
+
+import android.annotation.SuppressLint;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.ColorFilter;
@@ -12,52 +10,25 @@ import android.graphics.ColorMatrixColorFilter;
 import android.graphics.LightingColorFilter;
 import android.graphics.Matrix;
 import android.graphics.Paint;
-import android.graphics.PorterDuff;
-import android.graphics.PorterDuffColorFilter;
-import android.graphics.Shader;
 import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
-import android.support.v4.content.ContextCompat;
 import android.support.v4.content.FileProvider;
 import android.view.View;
 import android.widget.Button;
-
-import android.annotation.SuppressLint;
-import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
-import android.os.Vibrator;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
-import android.util.Log;
-import android.view.View;
-import android.widget.Button;
-import android.widget.HorizontalScrollView;
-import android.widget.TextView;
-
 import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.StringTokenizer;
-
-import java.io.FileNotFoundException;
-
-import android.app.Activity;
-import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
-import android.os.Bundle;
-import android.view.View;
-import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.TextView;
 import android.widget.Toast;
-
 import com.darwindeveloper.horizontalscrollmenulibrary.custom_views.HorizontalScrollMenuView;
 import com.darwindeveloper.horizontalscrollmenulibrary.extras.MenuItem;
 
@@ -69,12 +40,9 @@ public class MainPage extends AppCompatActivity {
     private Bitmap operation;
     private Bitmap newPicture;
     private static final int LOAD_PICTURE = 1;
-    private static final int REQUEST_IMAGE_CAPTURE = 2;
     private static final int REQUEST_TAKE_PHOTO = 3;
-    private final int[] mColors =
-            {Color.BLUE, Color.GREEN, Color.RED, Color.LTGRAY, Color.MAGENTA, Color.CYAN,
-                    Color.YELLOW, Color.WHITE};
-    /** Called when the activity is first created. */
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -89,8 +57,8 @@ public class MainPage extends AppCompatActivity {
 
         int w = 500, h = 500;
 
-        Bitmap.Config conf = Bitmap.Config.ARGB_8888; // see other conf types
-        Bitmap default_bmp = Bitmap.createBitmap(w, h, conf); // this creates a MUTABLE bitmap
+        Bitmap.Config conf = Bitmap.Config.ARGB_8888;
+        Bitmap default_bmp = Bitmap.createBitmap(w, h, conf);
 
 
         targetImage.setImageBitmap(default_bmp);
@@ -127,6 +95,7 @@ public class MainPage extends AppCompatActivity {
 
     }
 
+    @SuppressWarnings("ConstantConditions")
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -156,7 +125,7 @@ public class MainPage extends AppCompatActivity {
 
     private File createImageFile() throws IOException {
         // Create an image file name
-        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+        @SuppressLint("SimpleDateFormat") String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
         String imageFileName = "JPEG_" + timeStamp + "_";
         File storageDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
         File image = File.createTempFile(
@@ -193,14 +162,6 @@ public class MainPage extends AppCompatActivity {
         }
     }
 
-    private void galleryAddPic() {
-        Intent mediaScanIntent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
-        File f = new File(mCurrentPhotoPath);
-        Uri contentUri = Uri.fromFile(f);
-        mediaScanIntent.setData(contentUri);
-        this.sendBroadcast(mediaScanIntent);
-    }
-
     private void setPic() {
         // Get the dimensions of the View
         int targetW = targetImage.getWidth();
@@ -222,15 +183,15 @@ public class MainPage extends AppCompatActivity {
         //bmOptions.inPurgeable = true;
 
         Bitmap bitmap = BitmapFactory.decodeFile(mCurrentPhotoPath, bmOptions);
-        bitmap = RotateBitmap(bitmap, 270);
+        bitmap = RotateBitmap(bitmap);
         newPicture = bitmap;
         targetImage.setImageBitmap(bitmap);
     }
 
-    public static Bitmap RotateBitmap(Bitmap source, float angle)
+    public static Bitmap RotateBitmap(Bitmap source)
     {
         Matrix matrix = new Matrix();
-        matrix.postRotate(angle);
+        matrix.postRotate((float) 270);
         return Bitmap.createBitmap(source, 0, 0, source.getWidth(), source.getHeight(), matrix, true);
     }
 
@@ -241,7 +202,6 @@ public class MainPage extends AppCompatActivity {
         menu.addItem("Yellow", R.drawable.ic_check);
         menu.addItem("Magenta", R.drawable.ic_check);
         menu.addItem("Gray", R.drawable.ic_check);
-
         menu.addItem("Dark", R.drawable.ic_check);
         menu.addItem("Bright", R.drawable.ic_check);
         menu.addItem("Gama", R.drawable.ic_check);
@@ -252,7 +212,6 @@ public class MainPage extends AppCompatActivity {
             @Override
             public void onHSMClick(MenuItem menuItem, int position) {
                 Toast.makeText(MainPage.this,""+menuItem.getText(), Toast.LENGTH_SHORT).show();
-                //textTargetUri.setText(menuItem.getText());
                 String menuText = menuItem.getText();
                 switch (menuText) {
                     case "Blue":
@@ -443,12 +402,10 @@ public class MainPage extends AppCompatActivity {
                 int r = Color.red(p);
                 int g = Color.green(p);
                 int b = Color.blue(p);
-                int alpha = Color.alpha(p);
 
                 r =  r - 50;
                 g =  g - 50;
                 b =  b - 50;
-                alpha = alpha -50;
                 operation.setPixel(i, j, Color.argb(Color.alpha(p), r, g, b));
             }
         }

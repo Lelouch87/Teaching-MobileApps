@@ -1,4 +1,8 @@
 <resources>
-    <string name="app_name">Project2</string>
+    <string name="app_name">Photo Filter</string>
     <string name="intro_icon_description">intro icon</string>
+    <string name="restore">Restore</string>
+    <string name="load_image">Load Image</string>
+    <string name="take_picture">Take Pic</string>
+    <string name="image_view_description">current image</string>
 </resources>
