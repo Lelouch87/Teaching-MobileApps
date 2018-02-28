@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Project3</string>
+    <string name="app_name">Drawing Challenge</string>
     <string name="intro_icon_description">intro icon</string>
     <string name="WaitingMsg">Retrieving results from Cloud</string>
 

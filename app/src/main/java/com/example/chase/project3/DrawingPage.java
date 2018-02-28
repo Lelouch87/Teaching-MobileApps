@@ -137,7 +137,7 @@ public class DrawingPage extends AppCompatActivity implements View.OnClickListen
         whatToDraw.add("Tree");
         whatToDraw.add("Smiley Face");
         whatToDraw.add("Apple");
-        whatToDraw.add("Red Hat");
+        whatToDraw.add("Flower");
         whatToDraw.add("Bird");
     }
 
@@ -248,7 +248,7 @@ public class DrawingPage extends AppCompatActivity implements View.OnClickListen
             //switch to erase - choose size
             final Dialog brushDialog = new Dialog(this);
             brushDialog.setTitle("Eraser size:");
-            brushDialog.setContentView(R.layout.brush_chooser);
+            brushDialog.setContentView(R.layout.eraser_brush_chooser);
             ImageButton smallBtn = (ImageButton)brushDialog.findViewById(R.id.small_brush);
             smallBtn.setOnClickListener(new OnClickListener(){
                 @Override

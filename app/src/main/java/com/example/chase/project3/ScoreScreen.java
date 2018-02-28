@@ -185,7 +185,6 @@ public class ScoreScreen extends AppCompatActivity {
         try {
             //the second parameter used to be "profile.jpg"
             File f=new File(path, fileName);
-            //ImageView img=(ImageView)findViewById(R.id.target);
             return BitmapFactory.decodeStream(new FileInputStream(f));
         }
         catch (FileNotFoundException e)
@@ -474,7 +473,7 @@ public class ScoreScreen extends AppCompatActivity {
         correctResponses.add("bird");
         */
         correctResponses.add("bird");
-        correctResponses.add("headgear");
+        correctResponses.add("flower");
         correctResponses.add("apple");
         correctResponses.add("smile");
         correctResponses.add("tree");

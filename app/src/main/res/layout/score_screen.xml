@@ -80,14 +80,14 @@
 
         <ImageView
             android:id="@+id/drawing4"
-            android:layout_width="125dp"
-            android:layout_height="125dp"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
             android:layout_marginStart="40dp"
             android:layout_marginTop="48dp" />
         <ImageView
             android:id="@+id/drawing5"
-            android:layout_width="125dp"
-            android:layout_height="125dp"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
             android:layout_marginStart="75dp"
             android:layout_marginTop="48dp" />
 

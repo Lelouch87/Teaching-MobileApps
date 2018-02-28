@@ -8,15 +8,12 @@ import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.AsyncTask;
-import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.FileProvider;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -43,17 +40,9 @@ import com.google.api.services.vision.v1.model.Feature;
 import com.google.api.services.vision.v1.model.Image;
 
 import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
-import java.util.Locale;
-
-import javax.xml.transform.Result;
 
 public class MainPage extends AppCompatActivity {
 
@@ -62,14 +51,11 @@ public class MainPage extends AppCompatActivity {
 
     private ArrayList<String> fileNames;
     private ArrayList<String> labels;
-    private ArrayList<String> correctResponses;
-
     private final int NUMBER_ROUNDS = 5;
     private static String accessToken;
     private String mCurrentPhotoPath;
     private static final int REQUEST_SCORE_SCREEN = 1;
     private static final int REQUEST_NEW_ROUND = 2;
-    private static final int REQUEST_TAKE_PHOTO = 3;
     static final int REQUEST_GALLERY_IMAGE = 10;
     static final int REQUEST_CODE_PICK_ACCOUNT = 11;
     static final int REQUEST_ACCOUNT_AUTHORIZATION = 12;
@@ -88,22 +74,20 @@ public class MainPage extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main_page);
         labels = new ArrayList<>();
-        initializeResponses();
-        //fileNames = new ArrayList<>();
+        getWhatToDraw();
+
         menuMusic = MediaPlayer.create(MainPage.this, R.raw.introduction_in_love_with_a_ghost);
         drawingMusic = MediaPlayer.create(MainPage.this, R.raw.drawing_music);
         menuMusic.start();
         menuMusic.setLooping(true);
 
-        //canvasView = findViewById(R.id.selected_image);
 
         Button startPlayingButton = findViewById(R.id.start_playing_button);
-        Button selectImageButton = (Button) findViewById(R.id.select_image_button);
-        //Button takePictureButton = findViewById(R.id.take_picture_button);
-        targetImage = (ImageView) findViewById(R.id.selected_image);
+        Button selectImageButton = findViewById(R.id.select_image_button);
+        targetImage = findViewById(R.id.selected_image);
 
 
-        resultTextView = (TextView) findViewById(R.id.result);
+        resultTextView = findViewById(R.id.result);
         resultTextView.setText("Hello");
         selectImageButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -131,33 +115,14 @@ public class MainPage extends AppCompatActivity {
                         startActivityForResult(getDrawing, REQUEST_NEW_ROUND);
                     }
                 }
-
             }
         });
 
     }
 
-    private Bitmap loadImageFromStorage(String path, String fileName)
+    public void getWhatToDraw()
     {
-        try {
-            //the second parameter used to be "profile.jpg"
-            File f=new File(path, fileName);
-            //ImageView img=(ImageView)findViewById(R.id.target);
-            return BitmapFactory.decodeStream(new FileInputStream(f));
-        }
-        catch (FileNotFoundException e)
-        {
-            e.printStackTrace();
-        }
-        return null;
-    }
 
-    private void launchImagePicker() {
-        Intent intent = new Intent();
-        intent.setType("image/*");
-        intent.setAction(Intent.ACTION_GET_CONTENT);
-        startActivityForResult(Intent.createChooser(intent, "Select an image"),
-                REQUEST_GALLERY_IMAGE);
     }
 
     @Override
@@ -369,8 +334,6 @@ public class MainPage extends AppCompatActivity {
     }
 
     private String convertResponseToString(BatchAnnotateImagesResponse response) {
-        //StringBuilder message = new StringBuilder("Results:\n\n");
-        //message.append("Labels:\n");
         StringBuilder message = new StringBuilder("");
         List<EntityAnnotation> labels = response.getResponses().get(0).getLabelAnnotations();
         if (labels != null) {
@@ -382,43 +345,6 @@ public class MainPage extends AppCompatActivity {
             message.append("nothing\n");
         }
         return message.toString();
-    }
-
-    private int getScore(int index)
-    {
-        String current = labels.get(index);
-        String compareString = "";
-        StringBuilder sb = new StringBuilder();
-        int points = 10;
-        int i = 0;
-        while(current != null) {
-            if(current.charAt(i) != ',') {
-                sb.append(current.charAt(i));
-            } else {
-                //compare it
-                compareString = sb.toString();
-                sb = new StringBuilder();
-                if (compareString.equals(correctResponses.get(index-1))) {
-                    return points;
-                } else {
-                    points--;
-                }
-            }
-            i++;
-        }
-
-        return points;
-    }
-
-    public void initializeResponses()
-    {
-        correctResponses = new ArrayList<>();
-        correctResponses.add("tree");
-        correctResponses.add("smiley");
-        correctResponses.add("apple");
-        correctResponses.add("hat");
-        correctResponses.add("bird");
-
     }
 
     public Bitmap resizeBitmap(Bitmap bitmap) {
