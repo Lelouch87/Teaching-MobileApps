@@ -10,10 +10,11 @@ thing. Includes a brief splash screen, a main menu with music, a series of round
 System Design
 =============
 
-
 Need a google account, an internet connection, and an android touch-screen device.
 Application targeted version is Nougat 7.0 - 7.1.2
 Any android system can run this application
+
+
 
 
 Usage
