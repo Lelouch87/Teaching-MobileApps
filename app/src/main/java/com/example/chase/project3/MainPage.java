@@ -132,9 +132,11 @@ public class MainPage extends AppCompatActivity {
         switch (requestCode) {
             case REQUEST_PERMISSIONS:
                 if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    //Log.d("Error", "Request Granted");
                     getAuthToken();
                 } else {
                     Toast.makeText(MainPage.this, "Permission Denied!", Toast.LENGTH_SHORT).show();
+                    //Log.d("Error", "Request Denied!");
                 }
         }
     }
